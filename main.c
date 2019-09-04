@@ -1,22 +1,17 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+#define MAX 10
+
+int a[MAX];
+int rand_seed = 10;
+typedef int number;
+
 int main()
 {
     //writeFile();
     //readFile();
-    //memoryAlloc();
-    pointer();
-}
-
-int pointer()
-{
-    int* pc,c;
-    c = 5;
-    pc = &c;
-    printf("%d",*pc);
-
-    return 0;
+    arrSort();
 }
 
 int writeFile()
@@ -60,34 +55,34 @@ int readFile()
     return 0;
 }
 
-int memoryAlloc()
+int rand()
 {
-    int i, num;
-    float *data;
+    rand_seed = rand_seed * 1103515245  + 12345;
+    return (unsigned int)(rand_seed / 65536) % 32768;
+}
 
-    printf("Enter total number of elements(1 to 100): ");
-    scanf("%d", &num);
+int arrSort()
+{
+    number i,t,x,y;
 
-    data = (float*) calloc(num, sizeof(float));
-    if(data == NULL)
+    for(i=0;i<MAX;i++)
     {
-        printf("Error!!! memory not allocated.");
-        exit(0);
-    }
-    printf("\n");
-
-    for(i = 0; i < num; ++i)
-    {
-       printf("Enter Number %d: ", i + 1);
-       scanf("%f", data + i);
+        a[i]=rand();
+        printf("%d\n",a[i]);
     }
 
-    for(i = 1; i < num; ++i)
-    {
-       if(*data < *(data + i))
-           *data = *(data + i);
-    }
+    for (x=0; x < MAX-1; x++)
+        for (y=0; y < MAX-x-1; y++)
+            if (a[y] > a[y+1])
+            {
+                t=a[y];
+                a[y]=a[y+1];
+                a[y+1]=t;
+            }
 
-    printf("Largest element = %.2f", *data);
+    printf("--------------------\n");
+    for (i=0; i < MAX; i++)
+        printf("%d\n",a[i]);
+
     return 0;
 }
