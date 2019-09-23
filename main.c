@@ -1,17 +1,13 @@
 #include <stdio.h>
 #include <stdlib.h>
-
-#define MAX 10
-
-int a[MAX];
-int rand_seed = 10;
-typedef int number;
+#include <dirent.h>
 
 int main()
 {
     //writeFile();
     //readFile();
-    arrSort();
+    //copy();
+    direct();
 }
 
 int writeFile()
@@ -42,7 +38,7 @@ int readFile()
     int num;
     FILE *fptr;
 
-    if((fptr = fopen("C:\\Users\\rustam\\Desktop\\index.txt","r")) == NULL)
+    if((fptr = fopen("C:\\Users\\rustam\\Desktop\\rustam.txt","r")) == NULL)
     {
         printf("err");
             exit(1);
@@ -55,34 +51,38 @@ int readFile()
     return 0;
 }
 
-int rand()
-{
-    rand_seed = rand_seed * 1103515245  + 12345;
-    return (unsigned int)(rand_seed / 65536) % 32768;
+int direct(void){
+    DIR *d;
+    struct dirent *dir;
+    d = opendir("../");
+    if(d){
+        while((dir = readdir(d)) != NULL){
+            printf("%s\n",dir->d_name);
+        }
+        closedir(d);
+    }
+    return 0;
 }
 
-int arrSort()
+void copy()
 {
-    number i,t,x,y;
+    FILE *fptr;
+    char filename[150000];
+    char ch;
 
-    for(i=0;i<MAX;i++)
-    {
-        a[i]=rand();
-        printf("%d\n",a[i]);
+    printf("enter file name to open \n");
+    scanf("%s",filename);
+
+    fptr = fopen(filename,"r");
+    if(fptr == NULL){
+        printf("cannot open file \n");
+        exit(0);
     }
 
-    for (x=0; x < MAX-1; x++)
-        for (y=0; y < MAX-x-1; y++)
-            if (a[y] > a[y+1])
-            {
-                t=a[y];
-                a[y]=a[y+1];
-                a[y+1]=t;
-            }
-
-    printf("--------------------\n");
-    for (i=0; i < MAX; i++)
-        printf("%d\n",a[i]);
-
-    return 0;
+    ch = fgetc(fptr);
+    while(ch != EOF){
+        printf("%c",ch);
+        ch = fgetc(fptr);
+    }
+    fclose(fptr);
 }
